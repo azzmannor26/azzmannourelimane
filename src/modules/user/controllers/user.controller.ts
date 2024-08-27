@@ -47,7 +47,9 @@ export class UserController {
 
   @Roles(RoleName.ADMIN, RoleName.SUPER_ADMIN)
   @Get(ControllerEnum.ALL)
-  @ApiOperation({ summary: 'Retrieve a list of all users (admin)' })
+  @ApiOperation({
+    summary: 'Retrieve a list of all users (ADMIN & SUPER_ADMIN)',
+  })
   findAll(
     @Req() req: Request,
     @Query() data?: UserFiltersDto,
@@ -60,14 +62,16 @@ export class UserController {
 
   @Roles(RoleName.ADMIN, RoleName.SUPER_ADMIN)
   @Post()
-  @ApiOperation({ summary: 'Create a new user (admin)' })
+  @ApiOperation({ summary: 'Create a new user (ADMIN & SUPER_ADMIN)' })
   create(@Body() data: CreateUsersDto) {
     return this.userService.create(data);
   }
 
   @Roles(RoleName.ADMIN, RoleName.SUPER_ADMIN)
   @Get(':id')
-  @ApiOperation({ summary: 'Retrieve user details by user ID (admin)' })
+  @ApiOperation({
+    summary: 'Retrieve user details by user ID (ADMIN & SUPER_ADMIN)',
+  })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   findCurrentUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOneById(+id);
@@ -93,7 +97,9 @@ export class UserController {
 
   @Roles(RoleName.ADMIN, RoleName.SUPER_ADMIN)
   @Patch(':id')
-  @ApiOperation({ summary: 'Update user details by user ID (admin)' })
+  @ApiOperation({
+    summary: 'Update user details by user ID (ADMIN & SUPER_ADMIN)',
+  })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   async update(
     @Req() req: Request,
@@ -127,7 +133,7 @@ export class UserController {
 
   @Roles(RoleName.SUPER_ADMIN)
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a user by their ID (super admin)' })
+  @ApiOperation({ summary: 'Delete a user by their ID (SUPER_ADMIN)' })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.userService.delete(+id);

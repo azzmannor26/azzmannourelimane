@@ -6,10 +6,11 @@ import { PrismaService } from '../../../libs/prisma/prisma.service';
 import * as bcryptjs from 'bcryptjs';
 import { createPaginator } from 'prisma-pagination';
 import { ErrorCodeEnum } from '../../../core/error';
-import { ChangePassResponse, UserResponse } from '../../../core/interface';
+import { UserResponse } from '../../../core/interface';
 import { UserStatus } from '../../../core/enums';
 import {
   ChangePasswordDto,
+  CreateUserResponseDto,
   CreateUsersDto,
   UpdateUsersDto,
   UserFiltersDto,
@@ -19,7 +20,7 @@ import {
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateUsersDto): Promise<ChangePassResponse> {
+  async create(data: CreateUsersDto): Promise<CreateUserResponseDto> {
     const password = this.generatePassword(8);
     const newUser: Prisma.UserCreateInput = {
       ...data,
@@ -32,7 +33,7 @@ export class UserService {
       const user = await this.prisma.user.create({
         data: newUser,
       });
-      return { email: user.email, newPassword: password };
+      return { email: user.email, password: password };
     } catch (e) {
       if (
         e.code === ErrorCodeEnum.UNIQUE_CONSTRAINT_VIOLATION &&
