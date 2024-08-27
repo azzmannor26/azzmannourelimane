@@ -1,14 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '../libs/prisma/prisma.service';
-import { ErrorCodeEnum } from '../core/error';
+import { PrismaService } from '../../libs/prisma/prisma.service';
+import { ErrorCodeEnum } from '../../core/error';
 import * as bcryptjs from 'bcryptjs';
-import { User as us } from '../modules/user/user.model';
-import { User } from '@prisma/client';
-import { UserStatus } from '../core/enums';
-import { JWT_CONFIG_CONSENTS } from '../core/config';
-import { ErrorMessages } from '../core/messages';
-import { RegisterUserDto, LoginDto } from 'src/modules/user/dto';
+import { User as us } from '../../modules/user/user.model';
+import { UserStatus } from '../../core/enums';
+import { JWT_CONFIG_CONSENTS } from '../../core/config';
+import { ErrorMessages } from '../../core/messages';
+import { LoginDto, RegisterUserDto, RegisterUserResponseDto } from '../dto';
 
 @Injectable()
 export class AuthService {
@@ -69,7 +68,7 @@ export class AuthService {
     return { accessToken: this.jwtService.sign(data) };
   }
 
-  async register(data: RegisterUserDto): Promise<User> {
+  async register(data: RegisterUserDto): Promise<RegisterUserResponseDto> {
     const { password } = data;
     const hashPassword = await bcryptjs.hash(password, 10);
     data.password = hashPassword;
@@ -83,9 +82,19 @@ export class AuthService {
     NewUser.status = UserStatus.INACTIVE;
 
     try {
-      return await this.prismaService.user.create({
+      const res = await this.prismaService.user.create({
         data: NewUser,
       });
+      const {
+        password: _password,
+        firstLogin: _firstLogin,
+        status: _status,
+        createdAt: _createdAt,
+        updatedAt: _updatedAt,
+        role: _role,
+        ...date
+      } = res;
+      return date;
     } catch (e) {
       if (
         e.code === ErrorCodeEnum.UNIQUE_CONSTRAINT_VIOLATION &&

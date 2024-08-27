@@ -1,10 +1,10 @@
 import { Controller, Post, Body, Req, Res, HttpStatus } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { ControllerEnum } from '../core/enums';
 import { ApiTags } from '@nestjs/swagger';
-import { SuccessMessages } from '../core/messages';
-import { LoginDto, RegisterUserDto } from 'src/modules/user/dto';
+import { ControllerEnum } from 'src/core/enums';
+import { AuthService } from '../services/auth.service';
+import { SuccessMessages } from 'src/core/messages';
+import { LoginDto, RegisterUserDto } from '../dto';
 
 @ApiTags('Auth')
 @Controller(`${ControllerEnum.AUTH}`)
@@ -31,7 +31,6 @@ export class AuthController {
 
   @Post(ControllerEnum.REGISTER)
   async register(
-    @Req() request: Request,
     @Res() response: Response,
     @Body() registerDto: RegisterUserDto,
   ): Promise<any> {

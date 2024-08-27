@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '../libs/prisma/prisma.service';
 import { UserService } from '../modules/user/services/services';
 import { JWT_CONFIG_CONSENTS } from '../core/config';
+import { AuthController } from './controller/auth.controller';
 
 @Module({
   controllers: [AuthController],

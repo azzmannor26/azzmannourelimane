@@ -1,8 +1,6 @@
 import { IsEmail } from 'class-validator';
-import { ApiProperty, ApiQuery } from '@nestjs/swagger';
-import { RoleName } from 'src/core/enums';
+import { ApiProperty } from '@nestjs/swagger';
 
-@ApiQuery({ name: 'role', enum: RoleName })
 export class RegisterUserDto {
   @ApiProperty()
   @IsEmail()
