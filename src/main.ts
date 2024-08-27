@@ -6,6 +6,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerEnum } from './core/enums';
 import { LogLevel, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { LoggerService } from './libs/logger';
 
 async function bootstrap() {
   const isProduction = process.env.NODE_ENV === 'development';
@@ -50,6 +51,13 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3010;
 
   await app.listen(port, '0.0.0.0');
-  console.info(`Application is running on: ${await app.getUrl()}:/api-docs`);
+  const logger = await app.resolve(LoggerService);
+  logger.setContext('Bootstrap ');
+  logger.verbose(`Server launched, HTTP on : http://localhost:${port}/}`);
+
+  //console.info(`Application is running on: ${await app.getUrl()}:/api-docs`);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  throw err;
+});
