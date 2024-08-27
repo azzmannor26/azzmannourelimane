@@ -54,8 +54,6 @@ async function bootstrap() {
   const logger = await app.resolve(LoggerService);
   logger.setContext('Bootstrap ');
   logger.verbose(`Server launched, HTTP on : http://localhost:${port}/}`);
-
-  //console.info(`Application is running on: ${await app.getUrl()}:/api-docs`);
 }
 
 bootstrap().catch((err) => {
