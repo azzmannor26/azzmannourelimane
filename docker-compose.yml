@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db_postgres_service:
+    image: postgres:16-alpine
+    container_name: db_postgres_container
+    hostname: db_postgres_host
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: back-db
+    env_file:
+      - .env.postgresql
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - nest-js
+    restart: always
+
+volumes:
+  db-data:
+
+networks:
+  nest-js:
+    driver: bridge

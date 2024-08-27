@@ -1,0 +1,13 @@
+.git
+.gitignore
+.env-*
+.gitlab-*
+*.md
+Dockerfile
+.dockerignore
+node_modules
+dist
+.vscode/
+.idea/
+.yarn/
+bin/
