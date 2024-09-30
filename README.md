@@ -98,6 +98,75 @@ yarn deadcode
 
 ```
 
+## Code Standards and Organization
+
+## Nomenclature
+
+### Variables & Functions
+
+Use camelCase for variable and function names.
+
+### Classes & Interfaces
+
+Use PascalCase for class and interface names.
+
+### Constants
+
+Use UPPER_CASE for constant values.
+
+### Files
+
+Use kebab-case for file names. For example, `user-profile.service.ts`.
+
+## Code Review
+
+### Pull Requests
+
+All changes must be submitted via pull requests (PRs).
+
+### Review Process
+
+Every PR will be reviewed before merging.
+
+### Comments
+
+Use inline comments to provide feedback or suggest changes.
+
+### Testing
+
+Ensure new code does not break existing functionality and passes all tests.
+
+## File Organization
+
+### Modular Structure
+
+Organize the codebase into modules. Each module should represent a distinct functionality of the application.
+
+### Folders
+
+- **Enums:** Place all enumerations in an enums folder.
+- **Interfaces:** All interfaces should be in an interfaces folder.
+- **Services:** Services should be placed in a services folder within their respective module.
+- etc...
+
+### Consistency
+
+Maintain a consistent structure across different modules for ease of understanding and maintenance.
+
+## Additional Best Practices
+
+### DRY Principle
+
+Avoid duplication of code. Reuse code through functions, services, and modules.
+
+### Commenting
+
+Write meaningful comments for complex logic to improve code readability.
+
+### Documentation
+
+Regularly update the project documentation, especially when adding new features or making significant changes to existing ones.
+
 ## Project Structure
 
 ```
@@ -195,8 +264,3 @@ yarn deadcode
  ┣ 📜tsconfig.json
  ┗ 📜yarn.lock
 ```
-
-## Author
-
-- GitHub [@MedKHaldoun](https://www.github.com/MedKHaldoun)
-- GitLab [@MedKHaldoun](https://www.github.com/MedKHaldoun)
