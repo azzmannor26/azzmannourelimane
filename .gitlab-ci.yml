@@ -1,0 +1,48 @@
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+
+build:
+  stage: build
+  image: node:21
+  before_script:
+    - rm -rf node_modules dist yarn.lock
+    - yarn install
+  script:
+    - yarn build
+  only:
+    - master
+
+lint:test:
+  stage: test
+  image: node:21
+  before_script:
+    - rm -rf node_modules dist yarn.lock
+    - yarn install
+    - yarn build
+  script:
+    - yarn lint
+  allow_failure: true
+
+depcheck:test:
+  stage: test
+  image: node:21
+  before_script:
+    - rm -rf node_modules dist yarn.lock
+    - yarn install
+    - yarn build
+  script:
+    - yarn depcheck
+  allow_failure: true
+
+deadcode:test:
+  stage: test
+  image: node:21
+  before_script:
+    - rm -rf node_modules dist yarn.lock
+    - yarn install
+    - yarn build
+  script:
+    - yarn run deadcode
+  allow_failure: true
+

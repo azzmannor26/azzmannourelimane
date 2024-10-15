@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Define the Prisma client generator configuration
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
+}
+
+// Define the PostgreSQL database connection configuration
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                          Int                     @id @default(autoincrement())
+  email                       String                  @unique
+  password                    String                
+  firstName                   String                
+  lastName                    String                
+  phone                       String                
+  firstLogin                  Boolean?                @default(false)              
+  status                      UserStatus              @default(INACTIVE)          
+  createdAt                   DateTime                @default(now())
+  updatedAt                   DateTime                @updatedAt
+  role                        RoleName                @default(USER)
+}
+
+ // statuses for the users
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  REJECTED
+}
+
+//RoleName
+enum RoleName {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+// Status enum
+enum Status {
+  ACTIVE        // Represents an active state
+  INACTIVE      // Represents an inactive state
+  SUSPENDED     // Represents a temporary inactive state due to some conditions or restrictions
+  REJECTED      // Represents a state where the entity has been reviewed and not accepted
+}
