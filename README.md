@@ -1,4 +1,5 @@
-<p align="left">Hello World!! I am a Software Developer<br><br>🔭 I’m currently working on Many Softwares and Projects<br>🌱I’m currently learning machine learning, AI services ,DATA engineering<br>⚡hobbies: poetry , art , public speaking,problem solving</p>
+<p align="left"> AZZMAN NOUR ELIMANE
+  Hello World!! I am a Software Developer<br><br>🔭 I’m currently working on Many Softwares and Projects<br>🌱I’m currently learning machine learning, AI services ,DATA engineering<br>⚡hobbies: poetry , art , public speaking,problem solving</p>
 
 ###
 
