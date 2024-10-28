@@ -1,8 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Define the PostgreSQL database connection configuration
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 // Define the Prisma client generator configuration
 generator client {
@@ -10,27 +10,56 @@ generator client {
   previewFeatures = ["referentialActions"]
 }
 
-// Define the PostgreSQL database connection configuration
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
+// Your existing models and enums
 model User {
-  id                          Int                     @id @default(autoincrement())
-  email                       String                  @unique
-  password                    String                
-  firstName                   String                
-  lastName                    String                
-  phone                       String                
-  firstLogin                  Boolean?                @default(false)              
-  status                      UserStatus              @default(INACTIVE)          
-  createdAt                   DateTime                @default(now())
-  updatedAt                   DateTime                @updatedAt
-  role                        RoleName                @default(USER)
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  firstName   String
+  lastName    String
+  phone       String
+  firstLogin  Boolean?  @default(false)
+  status      UserStatus @default(INACTIVE)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  role        RoleName  @default(USER)
+  
+  // Add relation field for comments
+  comments    Comment[] // A user can have multiple comments
 }
 
- // statuses for the users
+model Blog {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  status    Status    @default(ACTIVE)
+  
+  // Add reciprocal relation for comments
+  comments  Comment[] // A blog can have multiple comments
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  userId    Int
+  blogId    Int
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  blog      Blog     @relation(fields: [blogId], references: [id])
+}
+
+// Enum definition for Status
+enum Status {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  REJECTED
+}
+
 enum UserStatus {
   ACTIVE
   INACTIVE
@@ -38,17 +67,8 @@ enum UserStatus {
   REJECTED
 }
 
-//RoleName
 enum RoleName {
   SUPER_ADMIN
   ADMIN
   USER
-}
-
-// Status enum
-enum Status {
-  ACTIVE        // Represents an active state
-  INACTIVE      // Represents an inactive state
-  SUSPENDED     // Represents a temporary inactive state due to some conditions or restrictions
-  REJECTED      // Represents a state where the entity has been reviewed and not accepted
 }

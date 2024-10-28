@@ -7,10 +7,10 @@ import { PrismaService } from '../libs/prisma/prisma.service';
 import { UserService } from '../modules/user/services/services';
 import { JWT_CONFIG_CONSENTS } from '../core/config';
 import { AuthController } from './controller/auth.controller';
-
+import { EmailService } from '../core/services/email.service';
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, JwtStrategy, UserService],
+  providers: [AuthService, PrismaService, JwtStrategy, UserService, EmailService],
   imports: [
     PassportModule,
     JwtModule.register({

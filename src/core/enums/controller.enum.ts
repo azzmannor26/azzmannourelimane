@@ -1,8 +1,10 @@
 export enum ControllerEnum {
-  ALL = 'all',
   AUTH = 'auth',
-  USER = 'user',
   LOGIN = 'login',
-  LOGOUT = 'logout',
   REGISTER = 'register',
+  LOGOUT = 'logout',
+  FORGOT_PASSWORD = 'forgot-password',
+  RESET_PASSWORD = 'reset-password',
+  ALL = "ALL",
+  USER = "USER",
 }

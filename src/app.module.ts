@@ -7,9 +7,10 @@ import { AppService } from './app.service';
 import { UserService } from './modules/user/services/services';
 import { LibsModule } from './libs/libs.module';
 import { UserController } from './modules/user/controllers/user.controller';
-
+import { CommentModule } from './modules/comment/comment.module';
+import { BlogModule } from './modules/blog/blog.module';
 @Module({
-  imports: [PrismaModule, ConfigModule.forRoot(), AuthModule, LibsModule],
+  imports: [PrismaModule, ConfigModule.forRoot(), AuthModule, LibsModule, CommentModule,  BlogModule],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],
 })

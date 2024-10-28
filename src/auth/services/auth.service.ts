@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../libs/prisma/prisma.service';
 import { ErrorCodeEnum } from '../../core/error';
@@ -8,12 +8,13 @@ import { UserStatus } from '../../core/enums';
 import { JWT_CONFIG_CONSENTS } from '../../core/config';
 import { ErrorMessages } from '../../core/messages';
 import { LoginDto, RegisterUserDto, RegisterUserResponseDto } from '../dto';
-
-@Injectable()
+import { EmailService } from '../../core/services/email.service';
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => PrismaService))
     private readonly prismaService: PrismaService,
     private jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
 
   public getCookieWithJwtToken(token: string) {
@@ -37,7 +38,6 @@ export class AuthService {
       );
     }
 
-    // Check user status
     if (user.status === UserStatus.INACTIVE) {
       throw new HttpException(
         ErrorMessages.USER_INACTIVE,
@@ -110,5 +110,43 @@ export class AuthService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async forgotPassword(email: string): Promise<any> {
+    console.log('PrismaService:', this.prismaService);  // Debug: Ensure prismaService is not undefined
+    const user = await this.prismaService.user.findUnique({ where: { email } });
+
+    if (!user) {
+      throw new HttpException(ErrorMessages.EMAIL_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    const token = this.jwtService.sign({ email }, { expiresIn: '1h' });
+    
+    // Send reset email
+    await this.emailService.sendPasswordResetEmail(email, token);
+
+    return { message: 'Password reset link sent' };
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<any> {
+    let decoded;
+    try {
+      decoded = this.jwtService.verify(token);
+    } catch (error) {
+      throw new HttpException(ErrorMessages.INVALID_TOKEN, HttpStatus.BAD_REQUEST);
+    }
+
+    const user = await this.prismaService.user.findUnique({ where: { email: decoded.email } });
+    if (!user) {
+      throw new HttpException(ErrorMessages.EMAIL_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+    await this.prismaService.user.update({
+      where: { email: decoded.email },
+      data: { password: hashedPassword },
+    });
+
+    return { message: 'Password has been reset successfully' };
   }
 }

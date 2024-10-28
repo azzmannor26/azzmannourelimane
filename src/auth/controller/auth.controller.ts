@@ -53,4 +53,33 @@ export class AuthController {
       message: SuccessMessages.LOGOUT,
     });
   }
+
+
+//forgot password
+  @Post(ControllerEnum.FORGOT_PASSWORD)
+async forgotPassword(
+  @Body('email') email: string,
+  @Res() response: Response,
+): Promise<any> {
+  const result = await this.authService.forgotPassword(email);
+  return response.status(200).json({
+    statusCode: HttpStatus.OK,
+    data: result,
+  });
+}
+//reset password
+@Post(ControllerEnum.RESET_PASSWORD)
+async resetPassword(
+  @Body('token') token: string,
+  @Body('newPassword') newPassword: string,
+  @Res() response: Response,
+): Promise<any> {
+  const result = await this.authService.resetPassword(token, newPassword);
+  return response.status(200).json({
+    statusCode: HttpStatus.OK,
+    data: result,
+  });
+}
+
+
 }

@@ -7,25 +7,27 @@ export const JWT_CONFIG_CONSENTS: JWTConfigInterface = {
 };
 
 function convertTimeToSeconds(timeString: string): number {
-  const timeUnits: { [key: string]: number } = {
-    s: 1,
-    m: 60,
-    h: 3600,
-    d: 86400,
-  };
-
-  const regex = /(\d+)([smhd])/;
-  const match = regex.exec(timeString);
-  if (!match) {
-    throw new Error('Invalid time string format');
+  if (!timeString) {
+      throw new Error('Time string is undefined or empty');
   }
 
-  const value = parseInt(match[1]);
+  const match = timeString.match(/^(\d+)([hms])$/); // Corrected regex pattern
+  if (!match) {
+      throw new Error('Invalid time string format');
+  }
+
+  const value = parseInt(match[1], 10);
   const unit = match[2];
 
-  if (!timeUnits[unit]) {
-    throw new Error('Invalid time unit');
+  switch (unit) {
+      case 'h':
+          return value * 3600;
+      case 'm':
+          return value * 60;
+      case 's':
+          return value;
+      default:
+          throw new Error('Invalid time unit');
   }
-
-  return value * timeUnits[unit];
 }
+

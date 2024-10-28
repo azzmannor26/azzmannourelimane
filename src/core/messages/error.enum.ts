@@ -20,4 +20,6 @@ export enum ErrorMessages {
   USER_REJECTED = 'User is rejected',
   CHANGE_PASSWORD_DEMAND_NOT_FOUND = 'Password change request not found for the provided ID: {ID}.',
   PASSWORD_CHANGE_REQUEST_ALREADY_EXISTS = 'Password change request already exists',
+  INVALID_TOKEN = "INVALID_TOKEN",
+  EMAIL_NOT_FOUND = "EMAIL_NOT_FOUND",
 }
