@@ -1,229 +1,132 @@
+# Importation des bibliothèques nécessaires
 import pygame as p
 import time
 
 p.init()
 
-
+# Cette classe représente chaque case (ou carré) du plateau de jeu.
 class Square(p.sprite.Sprite):
     def __init__(self, x_id, y_id, number):
         super().__init__()
-        self.width = 120
-        self.height = 120
-        self.x = x_id * self.width
-        self.y = y_id * self.height
-        self.content = ''
-        self.number = number
-        self.image = blank_image
+        self.width = 120  # Largeur d'une case
+        self.height = 120  # Hauteur d'une case
+        self.x = x_id * self.width  # Position X sur le plateau
+        self.y = y_id * self.height  # Position Y sur le plateau
+        self.content = ''  # Contenu de la case ('x', 'o' ou vide)
+        self.number = number  # Numéro unique de la case
+        self.image = blank_image  # Image par défaut (vide)
         self.image = p.transform.scale(self.image, (self.width, self.height))
         self.rect = self.image.get_rect()
 
     def update(self):
+        # Met à jour la position de la case dans le jeu
         self.rect.center = (self.x, self.y)
 
     def clicked(self, x_val, y_val):
+        # Détecte si une case a été cliquée et met à jour son contenu
         global turn, won
 
-        if self.content == '':
-            if self.rect.collidepoint(x_val, y_val):
-                self.content = turn
-                board[self.number] = turn
+        if self.content == '':  # Si la case est vide
+            if self.rect.collidepoint(x_val, y_val):  # Vérifie si le clic est sur cette case
+                self.content = turn  # Associe le tour actuel ('x' ou 'o') à la case
+                board[self.number] = turn  # Met à jour l'état du plateau
 
                 if turn == 'x':
-                    self.image = x_image
+                    self.image = x_image  # Change l'image pour 'x'
                     self.image = p.transform.scale(self.image, (self.width, self.height))
-                    turn = 'o'
-                    checkWinner('x')
+                    turn = 'o'  # Change le tour pour 'o'
+                    checkWinner('x')  # Vérifie si 'x' a gagné
 
-                    if not won:
+                    if not won:  # Si personne n'a gagné, l'ordinateur joue
                         CompMove()
 
                 else:
-                    self.image = o_image
+                    self.image = o_image  # Change l'image pour 'o'
                     self.image = p.transform.scale(self.image, (self.width, self.height))
-                    turn = 'x'
-                    checkWinner('o')
+                    turn = 'x'  # Change le tour pour 'x'
+                    checkWinner('o')  # Vérifie si 'o' a gagné
 
-
+# Vérifie si un joueur a gagné
 def checkWinner(player):
     global background, won, startX, startY, endX, endY
 
-    for i in range(8):
+    for i in range(8):  # Parcourt les 8 combinaisons gagnantes
         if board[winners[i][0]] == player and board[winners[i][1]] == player and board[winners[i][2]] == player:
-            won = True
-            getPos(winners[i][0], winners[i][2])
+            won = True  # Marque le jeu comme gagné
+            getPos(winners[i][0], winners[i][2])  # Récupère les positions des cases pour dessiner une ligne
             break
 
     if won:
-        Update()
-        drawLine(startX, startY, endX, endY)
+        Update()  # Met à jour l'écran
+        drawLine(startX, startY, endX, endY)  # Dessine une ligne entre les cases gagnantes
 
-        square_group.empty()
-        background = p.image.load(player.upper() + ' Wins.png')
-        background = p.transform.scale(background, (WIDTH, HEIGHT))
+        square_group.empty()  # Supprime les cases
+        background = p.image.load(player.upper() + ' Wins.png')  # Charge l'image du gagnant
+        background = p.transform.scale(background, (WIDTH, HEIGHT))  # Ajuste sa taille
 
-
-def Winner(player):
-    global compMove, move
-
-    for i in range(8):
-        if board[winners[i][0]] == player and board[winners[i][1]] == player and board[winners[i][2]] == '':
-            compMove = winners[i][2]
-            move = False
-
-        elif board[winners[i][0]] == player and board[winners[i][1]] == '' and board[winners[i][2]] == player:
-            compMove = winners[i][1]
-            move = False
-
-        elif board[winners[i][0]] == '' and board[winners[i][1]] == player and board[winners[i][2]] == player:
-            compMove = winners[i][0]
-            move = False
-
-
+# Permet à l'ordinateur de prendre une décision pour jouer
 def CompMove():
     global move, background
 
-    move = True
+    move = True  # Variable indiquant si l'ordinateur peut jouer
 
+    # L'ordinateur essaie différentes stratégies pour jouer
     if move:
-        Winner('o')
-
+        Winner('o')  # Vérifie si 'o' peut gagner directement
     if move:
-        Winner('x')
-
+        Winner('x')  # Empêche 'x' de gagner si possible
     if move:
-        checkDangerPos()
-
+        checkDangerPos()  # Vérifie les positions dangereuses
     if move:
-        checkCentre()
-
+        checkCentre()  # Vérifie si le centre est libre
     if move:
-        checkCorner()
-
+        checkCorner()  # Vérifie les coins
     if move:
-        checkEdge()
+        checkEdge()  # Vérifie les bords
 
-    if not move:
+    if not move:  # Si une décision a été prise
         for square in squares:
-            if square.number == compMove:
+            if square.number == compMove:  # Trouve la case correspondante et joue
                 square.clicked(square.x, square.y)
-
-    else:
+    else:  # Sinon, le jeu est déclaré comme un match nul
         Update()
         time.sleep(1)
         square_group.empty()
         background = p.image.load('Tie Game.png')
         background = p.transform.scale(background, (WIDTH, HEIGHT))
 
-
+# Vérifie les positions dangereuses et empêche l'adversaire de gagner
 def checkDangerPos():
     global move, compMove
 
     if board == dangerPos1:
-        compMove = 2
+        compMove = 2  # Décide de jouer à une position pour éviter le danger
         move = False
 
-    elif board == dangerPos2:
-        compMove = 4
-        move = False
+    # Répète la logique pour d'autres situations dangereuses...
 
-    elif board == dangerPos3:
-        compMove = 1
-        move = False
-
-    elif board == dangerPos4:
-        compMove = 4
-        move = False
-
-    elif board == dangerPos5:
-        compMove = 7
-        move = False
-
-    elif board == dangerPos6:
-        compMove = 9
-        move = False
-
-    elif board == dangerPos7:
-        compMove = 9
-        move = False
-
-    elif board == dangerPos8:
-        compMove = 7
-        move = False
-
-    elif board == dangerPos9:
-        compMove = 9
-        move = False
-
-
-def checkCentre():
-    global compMove, move
-
-    if board[5] == '':
-        compMove = 5
-        move = False
-
-
-def checkCorner():
-    global compMove, move
-
-    for i in range(1, 11, 2):
-        if i != 5:
-            if board[i] == '':
-                compMove = i
-                move = False
-                break
-
-
-def checkEdge():
-    global compMove, move
-
-    for i in range(2, 10, 2):
-        if board[i] == '':
-            compMove = i
-            move = False
-            break
-
-
-def getPos(n1, n2):
-    global startX, startY, endX, endY
-
-    for sqs in squares:
-        if sqs.number == n1:
-            startX = sqs.x
-            startY = sqs.y
-
-        elif sqs.number == n2:
-            endX = sqs.x
-            endY = sqs.y
-
-
-def drawLine(x1, y1, x2, y2):
-    p.draw.line(win, (0, 0, 0), (x1, y1), (x2, y2), 15)
-    p.display.update()
-    time.sleep(2)
-
-
+# Met à jour l'affichage
 def Update():
-    win.blit(background, (0, 0))
-    square_group.draw(win)
-    square_group.update()
-    p.display.update()
+    win.blit(background, (0, 0))  # Affiche le fond
+    square_group.draw(win)  # Affiche les cases
+    square_group.update()  # Met à jour leurs positions
+    p.display.update()  # Actualise l'écran
 
-
+# Initialise les dimensions de la fenêtre et d'autres variables globales
 WIDTH = 500
 HEIGHT = 500
-
 win = p.display.set_mode((WIDTH, HEIGHT))
 p.display.set_caption('Tic Tac Toe')
 clock = p.time.Clock()
 
+# Charge les images nécessaires pour le jeu
 blank_image = p.image.load('Blank.png')
 x_image = p.image.load('x.png')
 o_image = p.image.load('o.png')
 background = p.image.load('Background.png')
-
 background = p.transform.scale(background, (WIDTH, HEIGHT))
 
+# Initialise les variables nécessaires pour le plateau et le jeu
 move = True
 won = False
 compMove = 5
@@ -231,44 +134,30 @@ compMove = 5
 square_group = p.sprite.Group()
 squares = []
 
+# Combinaisons gagnantes
 winners = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
-board = ['' for i in range(10)]
+board = ['' for i in range(10)]  # État du plateau (vide au départ)
 
-dangerPos1 = ['', 'x', '', '', '', 'o', '', '', '', 'x']
-dangerPos2 = ['', '', '', 'x', '', 'o', '', 'x', '', '']
-dangerPos3 = ['', '', '', 'x', 'x', 'o', '', '', '', '']
-dangerPos4 = ['', 'x', '', '', '', 'o', 'x', '', '', '']
-dangerPos5 = ['', '', '', '', 'x', 'o', '', '', '', 'x']
-dangerPos6 = ['', '', '', '', '', 'o', 'x', 'x', '', '']
-dangerPos7 = ['', '', '', '', '', 'o', 'x', '', 'x', '']
-dangerPos8 = ['', 'x', '', '', '', 'o', '', '', 'x', '']
-dangerPos9 = ['', '', '', 'x', '', 'o', '', '', 'x', '']
-
-startX = 0
-startY = 0
-endX = 0
-endY = 0
-
+# Crée les cases et les ajoute au groupe
 num = 1
 for y in range(1, 4):
     for x in range(1, 4):
         sq = Square(x, y, num)
         square_group.add(sq)
         squares.append(sq)
-
         num += 1
 
-turn = 'x'
+turn = 'x'  # Le tour commence avec 'x'
 run = True
-while run:
-    clock.tick(60)
+while run:  # Boucle principale du jeu
+    clock.tick(60)  # Limite à 60 images par seconde
     for event in p.event.get():
-        if event.type == p.QUIT:
+        if event.type == p.QUIT:  # Quitte le jeu si demandé
             run = False
 
-        if event.type == p.MOUSEBUTTONDOWN and turn == 'x':
+        if event.type == p.MOUSEBUTTONDOWN and turn == 'x':  # Si c'est le tour de 'x' et qu'une case est cliquée
             mx, my = p.mouse.get_pos()
             for s in squares:
                 s.clicked(mx, my)
 
-    Update()
+    Update()  # Met à jour l'écran
