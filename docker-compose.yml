@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+  laravel:
+    build:
+      context: .
+      dockerfile: /home/azzman/Downloads/GeniusLab_GINF1/backend/Dockerfile
+    image: gllaravel-app
+    container_name: elastic_rubin
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - laravel_volume:/var/www/html
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=laravel_db
+      - DB_USERNAME=your_db_username
+      - DB_PASSWORD=your_db_password
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:latest
+    container_name: priceless_rhodes
+    restart: always
+    ports:
+      - "8888:80"
+    volumes:
+      - /home/azzman/Downloads/GeniusLab_GINF1/nginx/:/etc/nginx/conf.d
+
+    depends_on:
+      - laravel
+
+  db:
+    image: postgres:14
+    container_name: db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=laravel_db
+      - POSTGRES_USER=your_db_username
+      - POSTGRES_PASSWORD=your_db_password
+
+  vuejs:
+    build:
+      context: ./vuejs
+      dockerfile: /home/azzman/Downloads/GeniusLab_GINF1/frontend/Dockerfile
+    image: glvue-app 
+    container_name:  exciting_chaum
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - vuejs_volume:/app
+    depends_on:
+      - laravel
+
+networks:
+  laravel_network:
+    driver: bridge
+
+volumes:
+  laravel_volume:
+  vuejs_volume:
+
+

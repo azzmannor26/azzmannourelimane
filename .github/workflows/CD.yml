@@ -1,0 +1,90 @@
+name: CD continuous deployment
+
+on:
+  push:
+    branches:
+      - main
+      - backend-global
+      - frontend-global
+      - dev_env
+      - backend
+  pull_request:
+    branches:
+      - main
+      - backend-global
+      - frontend-global
+      - backend
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Remove node_modules and package-lock.json
+        run: |
+          rm -rf frontend/node_modules
+          rm -f frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: frontend # Path to your Vue.js frontend directory
+
+      - name: List Installed Packages (Debug Step)
+        run: npm ls
+        working-directory: frontend  
+
+      - name: Build Frontend
+        run: npm run build
+        working-directory: frontend # Path to your Vue.js frontend directory
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          
+      - name: Set up Composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+          php -r "unlink('composer-setup.php');"        
+        
+      - name: Install Composer Dependencies
+        run: composer install
+        working-directory: backend # Path to your Laravel backend directory
+        
+      - name: Set up PostgreSQL
+        run: |
+          docker run --name my_postgres_container -e POSTGRES_PASSWORD= -p 5432:5432 -d postgres:14
+    
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Docker Build and Push Backend
+        uses: docker/build-push-action@v3
+        with:
+          context: backend  # Path to your Laravel backend directory
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/laravel-vuejs:latest
+          file: backend/Dockerfile  # Path to your Laravel Dockerfile
+    
+      - name: Docker Build and Push Frontend
+        uses: docker/build-push-action@v3
+        with:
+          context: frontend   # Path to your Vue.js frontend directory
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/vuejs-frontend:latest
+          file: frontend/Dockerfile  # Path to your Vue.js Dockerfile
