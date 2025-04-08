@@ -1,0 +1,58 @@
+stages:
+  - build
+  - test
+  - push
+
+variables:
+  # Docker Hub credentials (set these in your GitLab CI/CD settings as protected variables)
+  DOCKER_REGISTRY: docker.io
+  DOCKER_REPOSITORY: azzman2626
+  SPRINGBOOT_IMAGE: $DOCKER_REPOSITORY/mirai-springboot
+  POSTGRES_IMAGE: postgres:15
+  DOCKER_HOST: tcp://docker:2375
+
+default:
+  image: docker:24.0
+  services:
+    - docker:dind
+  before_script:
+    # Log in to Docker Hub
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+# Build stage: Build the Docker image
+build:
+  stage: build
+  script:
+    # Build the application JAR file using Maven
+    - apk add --no-cache maven
+    - mvn clean package -DskipTests
+
+    # Build the Docker image
+    - docker build -t $SPRINGBOOT_IMAGE:latest .
+    - docker push $SPRINGBOOT_IMAGE:latest
+
+    # Validate the Docker Compose file
+    - docker-compose config
+  artifacts:
+    paths:
+      - target/ # Ensure the build artifacts are available
+
+# Test stage: Run tests
+test:
+  stage: test
+  script:
+    - docker pull $SPRINGBOOT_IMAGE:latest
+    - docker compose up -d
+    # Run application tests
+    - apk add --no-cache maven
+    - mvn test
+    - docker compose down
+
+# Push stage: Push the image to Docker Hub
+push:
+  stage: push
+  script:
+    # Push the built Docker image to Docker Hub
+    - docker pull $SPRINGBOOT_IMAGE:latest
+    - docker tag $SPRINGBOOT_IMAGE:latest $DOCKER_REGISTRY/$SPRINGBOOT_IMAGE:latest
+    - docker push $DOCKER_REGISTRY/$SPRINGBOOT_IMAGE:latest

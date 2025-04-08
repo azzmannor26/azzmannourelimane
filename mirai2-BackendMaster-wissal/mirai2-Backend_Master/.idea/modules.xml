@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mirai2-Backend_Master/MIRAI.iml" filepath="$PROJECT_DIR$/mirai2-Backend_Master/MIRAI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mirai2-Backend_Nour.iml" filepath="$PROJECT_DIR$/.idea/mirai2-Backend_Nour.iml" />
+    </modules>
+  </component>
+</project>
