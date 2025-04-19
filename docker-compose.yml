@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./task-front
+    container_name: vue-app
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+  backend:
+    build: ./tasks-backend
+    container_name: express-api
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgrespassword
+      - DB_NAME=tasksdb
+    depends_on:
+      - db
+    networks:
+      - app-network
+  db:
+    image: postgres:14
+    container_name: pg-db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: tasksdb
+    networks:
+      - app-network
+volumes:
+  postgres_data:
+networks:
+  app-network:
+    driver: bridge
