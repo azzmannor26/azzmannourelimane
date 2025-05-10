@@ -16,7 +16,7 @@ app = FastAPI()
 
 # Mount templates and static assets
 templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/plots", StaticFiles(directory="/tmp/plots"), name="plots")
 
 # Load and preprocess data once at startup
 stagiaires = load_stagiaires()

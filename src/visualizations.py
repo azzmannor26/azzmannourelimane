@@ -5,8 +5,8 @@ import os
 
 sns.set(style="whitegrid")
 
-# Folder where plots will be saved
-STATIC_DIR = "static"
+# Use Hugging Face writable directory
+STATIC_DIR = "/tmp/plots"
 os.makedirs(STATIC_DIR, exist_ok=True)
 
 def plot_interns_per_month(df):
@@ -70,15 +70,3 @@ def run_all_visualizations(df):
     plot_paid_vs_unpaid(df)
     plot_stipend_distribution(df)
     plot_duration_distribution(df)
-
-# Optional for local testing
-if __name__ == "__main__":
-    from data_loader import load_stagiaires, load_stages, load_hr_requirements
-    from preprocessing import preprocess_data
-
-    stagiaires = load_stagiaires()
-    stages = load_stages()
-    hr_reqs = load_hr_requirements()
-    merged_data, _ = preprocess_data(stagiaires, stages, hr_reqs)
-
-    run_all_visualizations(merged_data)
