@@ -1,0 +1,11 @@
+id,month,department,needed_skills,num_interns,urgency_level,created_at
+1,2025-05-09,Finance,"['Communication', 'Project Management', 'Java', 'Machine Learning']",1,Low,2025-05-09
+2,2025-05-09,HR,"['SQL', 'Excel', 'Project Management']",2,Medium,2025-05-09
+3,2025-05-09,Marketing,"['Python', 'SQL', 'Communication']",2,Medium,2025-05-09
+4,2025-05-09,Data Science,"['Machine Learning', 'Project Management', 'Python']",1,Low,2025-05-09
+5,2025-05-09,Marketing,"['Project Management', 'Java', 'Machine Learning']",3,Medium,2025-05-09
+6,2025-05-09,Engineering,"['Excel', 'Machine Learning', 'Python', 'Project Management']",3,Medium,2025-05-09
+7,2025-05-09,Engineering,"['Java', 'SQL', 'Python']",2,Low,2025-05-09
+8,2025-05-09,Marketing,"['Project Management', 'Excel']",4,Low,2025-05-09
+9,2025-05-09,Engineering,"['Excel', 'Communication', 'Python', 'Project Management']",4,Low,2025-05-09
+10,2025-05-09,Data Science,"['SQL', 'Excel', 'Project Management', 'Python']",3,Medium,2025-05-09

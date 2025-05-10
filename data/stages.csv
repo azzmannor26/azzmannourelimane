@@ -1,0 +1,21 @@
+id,contract_status,date_debut,date_fin,departement,is_paid,location,stipend,sujet,superviseur_id,stagiaire_id
+1,Signed,2024-07-24,2025-01-11,Data Science,False,Remote,1000 USD,Furniture conservator/restorer,3,1
+2,Signed,2024-11-01,2025-04-25,HR,True,Remote,1000 USD,"Administrator, Civil Service",5,2
+3,Pending,2024-07-16,2024-08-30,Data Science,True,On-site,2000 USD,Energy manager,3,3
+4,Pending,2024-10-07,2025-03-21,Marketing,False,On-site,500 USD,Transport planner,4,4
+5,Signed,2024-06-27,2024-10-23,HR,True,Remote,1000 USD,Research scientist (physical sciences),2,5
+6,Signed,2025-01-22,2025-04-08,Marketing,True,On-site,1000 USD,"Social research officer, government",4,6
+7,Pending,2024-05-14,2024-07-13,Finance,True,Remote,500 USD,"Pharmacist, hospital",2,7
+8,Pending,2025-01-24,2025-05-06,HR,True,On-site,500 USD,Materials engineer,3,8
+9,Signed,2024-10-06,2025-03-24,Engineering,True,On-site,2000 USD,Rural practice surveyor,5,9
+10,Signed,2025-04-13,2025-07-01,Marketing,False,Remote,0 USD,General practice doctor,1,10
+11,Signed,2024-11-08,2025-01-09,Data Science,True,On-site,1000 USD,"Designer, fashion/clothing",4,11
+12,Signed,2024-07-07,2024-12-05,Marketing,False,On-site,1000 USD,"Teacher, early years/pre",1,12
+13,Pending,2025-02-28,2025-05-01,Finance,True,Remote,1000 USD,Ergonomist,3,13
+14,Pending,2024-11-10,2025-02-23,Data Science,False,Remote,0 USD,Television/film/video producer,1,14
+15,Pending,2024-12-26,2025-05-18,HR,True,On-site,2000 USD,"Sound technician, broadcasting/film/video",4,15
+16,Signed,2024-10-08,2024-12-17,Data Science,True,On-site,1000 USD,IT sales professional,3,16
+17,Pending,2024-10-13,2025-02-15,Finance,False,Remote,2000 USD,Corporate treasurer,3,17
+18,Signed,2025-02-22,2025-06-05,Marketing,False,On-site,1000 USD,Counselling psychologist,3,18
+19,Pending,2025-03-23,2025-06-05,HR,True,On-site,1000 USD,Chief of Staff,4,19
+20,Pending,2024-11-25,2025-05-14,Finance,False,Remote,1000 USD,Jewellery designer,4,20
