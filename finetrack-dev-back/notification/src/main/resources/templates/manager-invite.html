@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Invitation Manager</title>
+</head>
+<body style="font-family: Arial, sans-serif;">
+<h2>Bonjour <span th:text="${firstName}">Prénom</span> <span th:text="${lastName}">Nom</span>,</h2>
+
+<p>Vous avez été invité en tant que <b>MANAGER</b> sur FINETRACK.</p>
+<p>Identifiants de première connexion :</p>
+<ul>
+    <li>Mot de passe temporaire : <code th:text="${tempPassword}">Temp#123</code></li>
+</ul>
+
+<p>
+    Connectez-vous ici :
+    <a th:href="${loginUrl}" th:text="${loginUrl}">Se connecter</a>
+</p>
+
+<p style="color:#b91c1c"><b>Important :</b> pour votre sécurité, changez votre mot de passe dès votre première connexion.</p>
+
+<p>Bienvenue !</p>
+</body>
+</html>

@@ -1,0 +1,39 @@
+server:
+  port: 8087
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: vida2025verde@gmail.com
+    password: iihxfcrivndlpzei
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8089/realms/cardence
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    mail:
+      enabled: false  # Disable temporarily to avoid startup errors
+
+app:
+  mail:
+    from: "Finance Team <vida2025verde@gmail.com>"
+    frontendBaseUrl: "http://localhost:3000"
+    loginUrl: "http://localhost:3000/login"

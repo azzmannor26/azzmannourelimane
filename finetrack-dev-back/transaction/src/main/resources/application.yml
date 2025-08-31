@@ -1,0 +1,5 @@
+server.port: 8083
+spring:
+  data.mongodb.uri: mongodb://localhost:27017/transactiondb
+  security.oauth2.resourceserver.jwt.issuer-uri: http://localhost:8089/realms/cardence
+management.endpoints.web.exposure.include: "*"

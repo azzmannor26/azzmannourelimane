@@ -1,0 +1,25 @@
+server:
+  port: 8082
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/carddb
+  cloud:
+    compatibility-verifier:
+      enabled: false
+
+# For example in application.yml (same secret across services)
+security:
+  jwt:
+    secret: "U6a8oR0J0nJ9C2n2x5Ww7mZ2zKz3bqI8b0x8JwM1m6U=29"
+    issuer: "finetrack-auth"
+    access-ttl: 15m
+    refresh-ttl: 30m
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

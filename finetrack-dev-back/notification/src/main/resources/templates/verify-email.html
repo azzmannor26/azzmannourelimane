@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Vérifiez votre email</title>
+</head>
+<body style="font-family: Arial, sans-serif;">
+<h2>Bonjour <span th:text="${fullName}">Utilisateur</span>,</h2>
+<p>Merci de vous être inscrit sur FINETRACK.</p>
+<p>Veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :</p>
+<p>
+    <a th:href="${verificationLink}"
+       style="background:#2563eb;color:white;padding:10px 16px;border-radius:6px;text-decoration:none;">
+        Vérifier mon email
+    </a>
+</p>
+<p>Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :</p>
+<p><a th:href="${verificationLink}" th:text="${verificationLink}">Lien</a></p>
+<hr/>
+<small>Si vous n'êtes pas à l'origine de cette inscription, ignorez ce message.</small>
+</body>
+</html>
