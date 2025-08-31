@@ -5,8 +5,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: vida2025verde@gmail.com
-    password: iihxfcrivndlpzei
+    username: ..........@gmail.com
+    password: ............
     properties:
       mail:
         smtp:
@@ -34,6 +34,6 @@ management:
 
 app:
   mail:
-    from: "Finance Team <vida2025verde@gmail.com>"
+    from: "Finance Team <..........e@gmail.com>"
     frontendBaseUrl: "http://localhost:3000"
     loginUrl: "http://localhost:3000/login"
