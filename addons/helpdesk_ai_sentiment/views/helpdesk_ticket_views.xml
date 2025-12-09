@@ -1,0 +1,46 @@
+<odoo>
+    <!-- Vue liste (tree) des tickets -->
+    <record id="view_helpdesk_ticket_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Tickets de support">
+                <field name="name"/>
+                <field name="sentiment"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue formulaire (form) des tickets -->
+    <record id="view_helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket de support">
+                <header>
+                    <button name="action_analyze_sentiment" string="Analyser avec IA" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="sentiment"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action pour ouvrir la liste des tickets -->
+    <record id="action_helpdesk_ticket" model="ir.actions.act_window">
+        <field name="name">Tickets de support</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu principal -->
+    <menuitem id="menu_helpdesk_root" name="Support IA"/>
+
+    <!-- Sous-menu pour les tickets -->
+    <menuitem id="menu_helpdesk_ticket" name="Tickets" parent="menu_helpdesk_root" action="action_helpdesk_ticket"/>
+</odoo>
