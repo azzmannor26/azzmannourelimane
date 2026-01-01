@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="content">
+    <div class="content-card">
+        <!-- Header with actions -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1"> Gestion des Élèves</h2>
+                <p class="text-muted mb-0">Liste complète des étudiants inscrits</p>
+            </div>
+            <a class="btn btn-primary btn-modern" th:href="@{/eleves/new}">
+                <i class="bi bi-person-plus me-2"></i>Nouvel élève
+            </a>
+        </div>
+
+        <!-- Search and filter -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-0 bg-light" placeholder="Rechercher un élève...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select bg-light border-0">
+                    <option>Trier par: Nom</option>
+                    <option>Trier par: Date d'inscription</option>
+                    <option>Trier par: Filière</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-modern table-hover">
+                <thead>
+                <tr>
+                    <th>Matricule</th>
+                    <th>Nom complet</th>
+                    <th>Filière</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="e : ${eleves}">
+                    <td>
+                        <span class="badge bg-primary badge-modern" th:text="${e.matricule}"></span>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-placeholder bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <span class="text-primary fw-bold" th:text="${e.prenomEleve != null ? e.prenomEleve.substring(0,1) : '?'}"></span>
+                            </div>
+                            <div>
+                                <strong th:text="${e.nomEleve + ' ' + e.prenomEleve}"></strong><br>
+                                <!-- FIXED: Proper string escaping -->
+                                <small class="text-muted" th:text="${e.email != null ? e.email : 'Pas d''email'}"></small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                            <span th:if="${e.filiere != null}"
+                                  class="badge bg-secondary badge-modern"
+                                  th:text="${e.filiere.nomFiliere}"></span>
+                        <span th:unless="${e.filiere != null}"
+                              class="badge bg-warning badge-modern">
+                                Non assigné
+                            </span>
+                    </td>
+                    <td>
+                        <span class="badge bg-success badge-modern">Actif</span>
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-group" role="group">
+                            <a th:href="@{/eleves/edit/{id}(id=${e.id})}"
+                               class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a th:href="@{/eleves/delete/{id}(id=${e.id})}"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Empty state -->
+                <tr th:if="${#lists.isEmpty(eleves)}">
+                    <td colspan="5" class="text-center py-5">
+                        <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                        <h4 class="text-muted mt-3">Aucun élève</h4>
+                        <p class="text-muted">Commencez par ajouter votre premier élève</p>
+                        <a th:href="@{/eleves/new}" class="btn btn-primary">
+                            <i class="bi bi-person-plus me-2"></i>Ajouter un élève
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div>
+                <span class="text-muted">Total: <strong th:text="${#lists.size(eleves)}">0</strong> élève(s)</span>
+            </div>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Précédent</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="content">
+    <div class="content-card">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Form Header -->
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-3">
+                        <a th:href="@{/cours/list}" class="btn btn-light btn-sm me-3">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                        <div>
+                            <h2 class="mb-0" th:text="${cours.id == null ? 'Nouveau cours' : 'Modifier cours'}"></h2>
+                            <p class="text-muted mb-0">
+                                Remplissez le formulaire ci-dessous
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form th:action="@{/cours/save}" th:object="${cours}" method="post"
+                      class="needs-validation" novalidate>
+
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Code
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{codeCours}"
+                               required
+                               placeholder="Ex: MAT101">
+                        <div class="invalid-feedback">
+                            Le code du cours est requis.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Intitulé
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{intitule}"
+                               required
+                               placeholder="Ex: Mathématiques avancées">
+                        <div class="invalid-feedback">
+                            L'intitulé du cours est requis.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Filières associées
+                        </label>
+                        <select multiple class="form-select" name="filiereIds" size="5">
+                            <option th:each="f : ${filieres}"
+                                    th:value="${f.id}"
+                                    th:text="${f.nomFiliere}"
+                                    th:selected="${cours.filieres != null && cours.filieres.contains(f)}">
+                            </option>
+                        </select>
+                        <small class="text-muted">Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs filières</small>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="border-top mt-5 pt-4">
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/cours/list}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Annuler
+                            </a>
+                            <button type="submit" class="btn btn-success btn-modern">
+                                <i class="bi bi-check-circle me-2"></i>
+                                <span th:text="${cours.id == null ? 'Créer le cours' : 'Enregistrer'}"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
