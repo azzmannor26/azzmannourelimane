@@ -1,10 +1,17 @@
-Projet : Gestion Académique – Spring Boot
-Description
 
-Ce projet est une application Web de gestion académique développée avec Spring Boot.
-Elle permet de gérer les élèves, les filières, les cours et les dossiers administratifs, en respectant l’architecture MVC.
 
-Structure du projet
+# **Projet : Gestion Académique – Spring Boot**
+
+## **Description**
+
+Ce projet est une application Web de **gestion académique** développée avec **Spring Boot**.
+Elle permet de gérer les **élèves**, les **filières**, les **cours** et les **dossiers administratifs**, en respectant l’architecture **MVC**.
+
+---
+
+## **Structure du projet**
+
+```
 gestion_academique_springboot
 │
 ├── controller
@@ -41,22 +48,24 @@ gestion_academique_springboot
 │   └── application.properties
 │
 └── GestionAcademiqueSpringbootApplication.java
+```
 
-Technologies utilisées
+---
 
-Java 17
+## **Technologies utilisées**
 
-Spring Boot
+* Java 17
+* Spring Boot
+* Spring Data JPA
+* Thymeleaf
+* Bootstrap
+* MariaDB
 
-Spring Data JPA
+---
 
-Thymeleaf
-
-Bootstrap
-
-MariaDB
-
-Remarque
+## **Remarque**
 
 Ce fichier README présente uniquement une vue globale du projet.
-Pour une explication détaillée de l’architecture, du MCD, des relations, des opérations CRUD et des choix techniques, veuillez consulter le rapport du projet.
+Pour une **explication détaillée de l’architecture, du MCD, des relations, des opérations CRUD et des choix techniques**, veuillez consulter le **rapport du projet**.
+
+
